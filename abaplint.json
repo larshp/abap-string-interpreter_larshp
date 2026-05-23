@@ -117,6 +117,7 @@
     "sequential_blank": true,
     "change_if_to_case": true,
     "catch_and_raise": true,
+    "constructor_visibility_public": true,
     "modify_only_own_db_tables": true,
     "cyclic_oo": true,
     "unsecure_fae": true,
