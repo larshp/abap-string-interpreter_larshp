@@ -75,7 +75,7 @@ CLASS zasis_cl_interpreter IMPLEMENTATION.
     ENDIF.
 
     "check auth first
-    me->auth_checker->check_execute( ruleset_id = ruleset->header-rulesetid ).
+    auth_checker->check_execute( ruleset_id = ruleset->header-rulesetid ).
 
     LOOP AT ruleset->items INTO DATA(rulesetitem).
 
@@ -84,7 +84,7 @@ CLASS zasis_cl_interpreter IMPLEMENTATION.
       "in case custom logic is assigned, no need for regular processing
       IF rulesetitem-custom_logic IS NOT INITIAL.
 
-        single_interpret_result = me->call_custom_logic(  custom_logic_class       = rulesetitem-custom_logic
+        single_interpret_result = call_custom_logic(  custom_logic_class       = rulesetitem-custom_logic
                                                           ruleset_ref             = ruleset
                                                           current_rule_item       = rulesetitem
                                                           string_to_be_interpreted = string_to_be_interpreted
@@ -142,7 +142,7 @@ CLASS zasis_cl_interpreter IMPLEMENTATION.
         ENDIF.
 
         IF rulesetitem-event_producer IS NOT INITIAL.
-          me->call_event_producer( event_producer_class  = rulesetitem-event_producer
+          call_event_producer( event_producer_class  = rulesetitem-event_producer
                                    ruleset_ref           = ruleset
                                    interpretation_itm    = rulesetitem-interpretationitm
                                    interpretation_result = <result_line>
@@ -165,7 +165,7 @@ CLASS zasis_cl_interpreter IMPLEMENTATION.
 
   METHOD call_custom_logic.
 
-    DATA(instance) = me->customlogic_resolver->resolve( custom_logic_class ).
+    DATA(instance) = customlogic_resolver->resolve( custom_logic_class ).
 
     interpretation_result = instance->execute(
       string_to_be_interpretet = string_to_be_interpreted
@@ -179,7 +179,7 @@ CLASS zasis_cl_interpreter IMPLEMENTATION.
   METHOD call_event_producer.
 
     TRY.
-        DATA(producer) = me->event_producer_resolver->resolve( event_producer_class ).
+        DATA(producer) = event_producer_resolver->resolve( event_producer_class ).
 
         IF producer IS NOT BOUND.
           RETURN.

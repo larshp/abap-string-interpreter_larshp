@@ -33,15 +33,15 @@ ENDCLASS.
 CLASS zasis_lcl_http_requ_validator IMPLEMENTATION.
   METHOD constructor.
 
-    me->_request = request.
+    _request = request.
 
-    me->_determine_path_elements( ).
+    _determine_path_elements( ).
 
   ENDMETHOD.
 
   METHOD extract_ruleset_id_from_requ.
 
-    me->validate_path( ).
+    validate_path( ).
 
     TRY.
 
