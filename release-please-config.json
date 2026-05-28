@@ -1,0 +1,14 @@
+{
+  "packages": {
+    ".": {
+      "release-type": "simple",
+      "extra-files": [
+        {
+          "type": "generic",
+          "path": "src/zasis_if_version.intf.abap",
+          "search-pattern": "VALUE '{{version}}'"
+        }
+      ]
+    }
+  }
+}

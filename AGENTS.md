@@ -10,12 +10,12 @@ ZASIS is an ABAP-based String Interpreter that allows configuring RuleSets to ex
 
 ### Versioning
 
-The project version is maintained in two places that **must always be kept in sync**:
+The project version is maintained in two places, both updated automatically by Release Please on merge of a Release PR:
 
 1. `package.json` — `"version"` field (used by npm scripts and release tooling)
 2. `src/zasis_if_version.intf.abap` — `version` constant (used at ABAP runtime)
 
-When bumping the version, **always update both files** to the same value.
+**Do NOT manually bump versions.** Release Please determines the next version from commit prefixes (`fix:` → patch, `feat:` → minor, `feat!:` → major) and updates both files automatically via `release-please-config.json`.
 
 ---
 
@@ -41,12 +41,8 @@ Only enter this workflow when the user signals intent to **implement something**
    - If pass → commit & push
    - If fail → attempt one fix cycle; if still failing, report errors to user and wait for guidance
 8. **Repeat steps 5–7** for each logical unit of work (multiple commits are encouraged for traceability)
-9. **Bump version** — suggest patch/minor/major based on the nature of changes, then update both version files in a single commit:
-   - `package.json` → `"version"` field
-   - `src/zasis_if_version.intf.abap` → `version` constant
-   - Guidelines: `patch` for fixes/refactors/style; `minor` for new features or capabilities; `major` for breaking changes
-10. **Create session summary** as the final commit (using `session-summary` skill)
-11. **Mark PR ready for review**
+9. **Create session summary** as the final commit (using `session-summary` skill)
+10. **Mark PR ready for review**
     - PR description includes: "⚠️ Please sync to SAP system via abapGit and run ABAP Unit tests before merging."
 
 This applies to ALL changes — code, documentation, skills, configuration. No exceptions.
