@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <abapGit version="v1.0.0" serializer="LCL_OBJECT_TABL" serializer_version="v1.0.0">
  <asx:abap xmlns:asx="http://www.sap.com/abapxml" version="1.0">
   <asx:values>
@@ -13,22 +13,18 @@
    <DD03P_TABLE>
     <DD03P>
      <FIELDNAME>RESULTS</FIELDNAME>
-     <ADMINFIELD>0</ADMINFIELD>
-     <INTTYPE>h</INTTYPE>
-     <INTLEN>000008</INTLEN>
-     <DATATYPE>TTYP</DATATYPE>
-     <MASK>  TTYP</MASK>
      <ROLLNAME>ZASIS_TT_INTERPRETATIONRESULT</ROLLNAME>
+     <ADMINFIELD>0</ADMINFIELD>
+     <DATATYPE>TTYP</DATATYPE>
+     <MASK>  TTYPL</MASK>
      <COMPTYPE>L</COMPTYPE>
     </DD03P>
     <DD03P>
      <FIELDNAME>CONTEXT</FIELDNAME>
-     <ADMINFIELD>0</ADMINFIELD>
-     <INTTYPE>h</INTTYPE>
-     <INTLEN>000008</INTLEN>
-     <DATATYPE>TTYP</DATATYPE>
-     <MASK>  TTYP</MASK>
      <ROLLNAME>ZASIS_TT_INTERPRET_CONTEXT</ROLLNAME>
+     <ADMINFIELD>0</ADMINFIELD>
+     <DATATYPE>TTYP</DATATYPE>
+     <MASK>  TTYPL</MASK>
      <COMPTYPE>L</COMPTYPE>
     </DD03P>
    </DD03P_TABLE>
