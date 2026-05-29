@@ -2,7 +2,7 @@
 .env
 .env.*
 !.env.example
-.vscode
+.vscode/settings.json
 
 # REST Client / HTTP test env (credentials)
 http-client.private.env.json
