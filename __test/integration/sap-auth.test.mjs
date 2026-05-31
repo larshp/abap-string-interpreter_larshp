@@ -11,7 +11,7 @@ import { getSapEnv, isSapAvailable } from './helpers/sap-client.mjs';
 before(() => {
   if (!isSapAvailable()) {
     throw new Error(
-      'SAP connection not configured. Create __test/http/http-client.env.json with local.baseUrl, local.client, local.auth_b64.'
+      'SAP connection not configured. Create __test/http/http-client.env.json with sap.baseUrl, sap.client, sap.auth_b64.'
     );
   }
 });

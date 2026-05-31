@@ -1,16 +1,28 @@
-### GET RuleSet Definition - MySample
-GET {{baseUrl}}/ruleSet/MySample?sap-client={{client}}
-Authorization: Basic {{auth_b64}}
+### ZASIS HTTP Integration Tests
+### Switch environment (Ctrl/Cmd+Alt+E): "sap" or "local-icf"
+### For local: start server with `npm run icf-server`
+
+# ─────────────────────────────────────────────
+# GET /ruleSet
+# ─────────────────────────────────────────────
+
+### GET RuleSet Definition (expect 200 with header and items)
+GET {{baseUrl}}/ruleSet/{{ruleSetId}}{{queryParams}}
+{{auth}}
 Accept: application/json
 
-### GET RuleSet Definition - Unknown RuleSet (expect error)
-GET {{baseUrl}}/ruleSet/UNKNOWN_RULESET?sap-client={{client}}
-Authorization: Basic {{auth_b64}}
+### GET RuleSet - Unknown RuleSet (expect 400 ZASIS_MSGS/007)
+GET {{baseUrl}}/ruleSet/UNKNOWN_RULESET_XYZ{{queryParams}}
+{{auth}}
 Accept: application/json
 
-### Execute RuleSet - MySample (barcode with MaterialNo and DeliveryNote)
-POST {{baseUrl}}/ruleSetExecution/MySample?sap-client={{client}}
-Authorization: Basic {{auth_b64}}
+# ─────────────────────────────────────────────
+# POST /ruleSetExecution
+# ─────────────────────────────────────────────
+
+### Execute RuleSet - extracts MaterialNo from barcode (expect 200)
+POST {{baseUrl}}/ruleSetExecution/{{ruleSetId}}{{queryParams}}
+{{auth}}
 Content-Type: application/json
 Accept: application/json
 
@@ -18,33 +30,19 @@ Accept: application/json
   "string_to_be_interpreted": "<Start><A7X>MyMaterialNumber<B52H>MyDeliveryNote<End>"
 }
 
-### Execute RuleSet - MySample (no match in string)
-POST {{baseUrl}}/ruleSetExecution/MySample?sap-client={{client}}
-Authorization: Basic {{auth_b64}}
+### Execute RuleSet - no match for unrecognized tags (expect 200)
+POST {{baseUrl}}/ruleSetExecution/{{ruleSetId}}{{queryParams}}
+{{auth}}
 Content-Type: application/json
 Accept: application/json
 
 {
-  "string_to_be_interpreted": "<Start><NO_KNOWN_TAG>SomeValue<End>"
+  "string_to_be_interpreted": "<Start><UNKNOWN>Value<End>"
 }
 
-### Execute RuleSet - Unknown RuleSet (expect error)
-POST {{baseUrl}}/ruleSetExecution/UNKNOWN_RULESET?sap-client={{client}}
-Authorization: Basic {{auth_b64}}
-Content-Type: application/json
-Accept: application/json
-
-{
-  "string_to_be_interpreted": "<Start><A7X>MyMaterialNumber<End>"
-}
-
-### GET RuleSet - without auth (expect 401/403)
-GET {{baseUrl}}/ruleSet/MySample?sap-client={{client}}
-Accept: application/json
-
-### Execute RuleSet - MySample with context (expect 200)
-POST {{baseUrl}}/ruleSetExecution/MySample?sap-client={{client}}
-Authorization: Basic {{auth_b64}}
+### Execute RuleSet - with context (expect 200, context round-trips)
+POST {{baseUrl}}/ruleSetExecution/{{ruleSetId}}{{queryParams}}
+{{auth}}
 Content-Type: application/json
 Accept: application/json
 
@@ -56,9 +54,9 @@ Accept: application/json
   ]
 }
 
-### Execute RuleSet - MySample with empty context array (expect 200)
-POST {{baseUrl}}/ruleSetExecution/MySample?sap-client={{client}}
-Authorization: Basic {{auth_b64}}
+### Execute RuleSet - empty context array (expect 200)
+POST {{baseUrl}}/ruleSetExecution/{{ruleSetId}}{{queryParams}}
+{{auth}}
 Content-Type: application/json
 Accept: application/json
 
@@ -67,9 +65,9 @@ Accept: application/json
   "context": []
 }
 
-### Execute RuleSet - empty string_to_be_interpreted (expect 400)
-POST {{baseUrl}}/ruleSetExecution/MySample?sap-client={{client}}
-Authorization: Basic {{auth_b64}}
+### Execute RuleSet - empty string_to_be_interpreted (expect 400 ZASIS_MSGS/015)
+POST {{baseUrl}}/ruleSetExecution/{{ruleSetId}}{{queryParams}}
+{{auth}}
 Content-Type: application/json
 Accept: application/json
 
@@ -78,27 +76,63 @@ Accept: application/json
 }
 
 ### Execute RuleSet - missing string_to_be_interpreted (expect 400)
-POST {{baseUrl}}/ruleSetExecution/MySample?sap-client={{client}}
-Authorization: Basic {{auth_b64}}
+POST {{baseUrl}}/ruleSetExecution/{{ruleSetId}}{{queryParams}}
+{{auth}}
 Content-Type: application/json
 Accept: application/json
 
 {}
 
-### Execute RuleSet - wrong Content-Type (expect 400)
-POST {{baseUrl}}/ruleSetExecution/MySample?sap-client={{client}}
-Authorization: Basic {{auth_b64}}
-Content-Type: text/plain
-Accept: application/json
-
-some plain text
-
-### Unsupported HTTP method PUT (expect 405)
-PUT {{baseUrl}}/ruleSetExecution/MySample?sap-client={{client}}
-Authorization: Basic {{auth_b64}}
+### Execute RuleSet - Unknown RuleSet (expect 400 ZASIS_MSGS/007)
+POST {{baseUrl}}/ruleSetExecution/UNKNOWN_RULESET_XYZ{{queryParams}}
+{{auth}}
 Content-Type: application/json
 Accept: application/json
 
 {
   "string_to_be_interpreted": "test"
 }
+
+### Execute RuleSet - wrong Content-Type (expect 400 ZASIS_MSGS/006)
+POST {{baseUrl}}/ruleSetExecution/{{ruleSetId}}{{queryParams}}
+{{auth}}
+Content-Type: text/plain
+Accept: application/json
+
+some plain text
+
+# ─────────────────────────────────────────────
+# Unsupported HTTP methods
+# ─────────────────────────────────────────────
+
+### PUT (expect 405 ZASIS_MSGS/016)
+PUT {{baseUrl}}/ruleSetExecution/{{ruleSetId}}{{queryParams}}
+{{auth}}
+Content-Type: application/json
+Accept: application/json
+
+{
+  "string_to_be_interpreted": "test"
+}
+
+### DELETE (expect 405 ZASIS_MSGS/016)
+DELETE {{baseUrl}}/ruleSetExecution/{{ruleSetId}}{{queryParams}}
+{{auth}}
+Accept: application/json
+
+# ─────────────────────────────────────────────
+# Invalid routes
+# ─────────────────────────────────────────────
+
+### GET invalid route (expect 400 ZASIS_MSGS/005)
+GET {{baseUrl}}/invalidRoute{{queryParams}}
+{{auth}}
+Accept: application/json
+
+# ─────────────────────────────────────────────
+# Auth tests (SAP only — local-icf has no auth)
+# ─────────────────────────────────────────────
+
+### GET RuleSet without auth (expect 401/403 on SAP, 200 on local-icf)
+GET {{baseUrl}}/ruleSet/{{ruleSetId}}{{queryParams}}
+Accept: application/json

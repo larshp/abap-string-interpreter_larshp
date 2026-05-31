@@ -12,7 +12,7 @@ const envPath = resolve(__dirname, '../../http/http-client.env.json');
 let env;
 try {
   const raw = readFileSync(envPath, 'utf-8');
-  env = JSON.parse(raw)['local'];
+  env = JSON.parse(raw)['sap'];
 } catch {
   env = null;
 }
