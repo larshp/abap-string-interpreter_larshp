@@ -34,6 +34,7 @@ jobs:
 
     steps:
       - name: Create Copilot docs-update issue
+        id: create-docs-issue
         uses: actions/github-script@v7
         with:
           script: |
@@ -155,7 +156,40 @@ jobs:
               title: `docs: update user manual for PR #${pr.number} — ${pr.title}`,
               body:  body.replace(/^ {12}/gm, ''), // strip template indentation
               labels: ['docs:user-manual-pending'],
-              assignees: ['Copilot'],
             });
 
+            core.setOutput('issue_number', issue.data.number);
             core.notice(`Created docs-update issue: ${issue.data.html_url}`);
+
+      - name: Assign issue to Copilot agent
+        if: steps.create-docs-issue.outputs.issue_number
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.COPILOT_PAT }}
+          script: |
+            const owner = context.repo.owner;
+            const repo  = context.repo.repo;
+            const issue_number = Number(process.env.ISSUE_NUMBER);
+
+            if (!issue_number || isNaN(issue_number)) {
+              core.warning('No issue number available — skipping Copilot assignment.');
+              return;
+            }
+
+            await github.request('POST /repos/{owner}/{repo}/issues/{issue_number}/assignees', {
+              owner,
+              repo,
+              issue_number,
+              assignees: ['copilot-swe-agent[bot]'],
+              agent_assignment: {
+                target_repo: `${owner}/${repo}`,
+                base_branch: 'main',
+                custom_instructions: '',
+                custom_agent: '',
+                model: '',
+              },
+            });
+
+            core.notice(`Assigned Copilot to issue #${issue_number}`);
+        env:
+          ISSUE_NUMBER: ${{ steps.create-docs-issue.outputs.issue_number }}
