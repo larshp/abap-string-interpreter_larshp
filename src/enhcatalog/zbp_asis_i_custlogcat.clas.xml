@@ -3,13 +3,15 @@
  <asx:abap xmlns:asx="http://www.sap.com/abapxml" version="1.0">
   <asx:values>
    <VSEOCLASS>
-    <CLSNAME>ZASIS_CL_CALC_EXPORT_URL</CLSNAME>
+    <CLSNAME>ZBP_ASIS_I_CUSTLOGCAT</CLSNAME>
     <LANGU>E</LANGU>
-    <DESCRIPT>ASIS - Virtual Element Calculation for Export URL</DESCRIPT>
+    <DESCRIPT>Behavior Implementation for Custom Logic Catalog</DESCRIPT>
+    <CATEGORY>06</CATEGORY>
     <STATE>1</STATE>
     <CLSCCINCL>X</CLSCCINCL>
     <FIXPT>X</FIXPT>
     <UNICODE>X</UNICODE>
+    <CLSDEFINT>ZASIS_I_CUSTLOGCATALOG</CLSDEFINT>
    </VSEOCLASS>
   </asx:values>
  </asx:abap>

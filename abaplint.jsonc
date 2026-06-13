@@ -10,7 +10,7 @@
     }
   ],
   "syntax": {
-    "version": "v757",
+    "version": "v758",
     "errorNamespace": "^(Z|Y|LCL_|TY_|LIF_)"
   },
   "rules": {
@@ -61,12 +61,10 @@
     },
     "unnecessary_return": true,
     "unreachable_code": true,
-    "unused_ddic": {
-      "exclude": [
-        "zasisdr_rusthd.tabl.xml",
-        "zasisdr_rustit.tabl.xml"
-      ]
-    },
+    // Disabled: abaplint cannot trace table references from CDS views (.asddls)
+    // or BDEF files (.asbdef) — only from ABAP source. Every table used solely
+    // via CDS or BDEF would require an exclusion entry, defeating the purpose.
+    "unused_ddic": false,
     "unused_methods": {},
     "unused_types": {
       "exclude": []
@@ -122,7 +120,9 @@
     "constructor_visibility_public": true,
     "modify_only_own_db_tables": true,
     "cyclic_oo": true,
-    "unsecure_fae": true,
+    // Disabled: experimental rule with false positives — does not recognize
+    // early RETURN as a valid FOR ALL ENTRIES emptiness guard.
+    "unsecure_fae": false,
     "call_transaction_authority_check": true,
     "dangerous_statement": {
       "exclude": [
@@ -149,6 +149,8 @@
       "ignoreExceptions": true,
       "ignoreGlobalDefinition": true
     },
+    // RAP behavior handler locals use CDS entity aliases (CamelCase) which
+    // cannot be lowercased — they must match the BDEF/CDS definition exactly.
     "keyword_case": {
       "style": "upper",
       "ignoreExceptions": true,
@@ -159,7 +161,8 @@
       "ignoreGlobalInterface": false,
       "ignoreKeywords": [],
       "exclude": [
-        "zbp_asis_i_ruleset.clas.locals_imp.abap"
+        "zbp_asis_i_ruleset.clas.locals_imp.abap",
+        "zbp_asis_i_custlogcat.clas.locals_imp.abap"
       ]
     },
     "method_parameter_names": {
