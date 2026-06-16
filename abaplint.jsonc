@@ -14,9 +14,8 @@
     "errorNamespace": "^(Z|Y|LCL_|TY_|LIF_)"
   },
   "rules": {
-    "check_syntax": false, // todo, this must be enabled
-    "unknown_types": false, // todo, this must be enabled
-
+    "check_syntax": false, 
+    "unknown_types": false,
     "begin_end_names": true,
     "check_text_elements": true,
     "ambiguous_statement": true,
@@ -79,7 +78,6 @@
     },
     "unused_variables": {
       "exclude": [
-        "zasis_cl_get_domain_fix_values.clas.abap"
       ],
       "skipAbstract": true
     },
@@ -102,7 +100,6 @@
     "select_add_order_by": {
       "skipForAllEntries": true,
       "exclude": [
-        "zasis_cl_get_domain_fix_values.clas.abap"
       ]
     },
     "select_performance": {
@@ -110,7 +107,6 @@
       "selectStar": true,
       "starOkayIfFewColumns": 10,
       "exclude": [
-        "zasis_cl_get_domain_fix_values.clas.abap"
       ]
     },
     "db_operation_in_loop": true,
@@ -133,7 +129,6 @@
     "call_transaction_authority_check": true,
     "dangerous_statement": {
       "exclude": [
-        "zasis_cl_get_domain_fix_values.clas.abap"
       ],
       "severity": "Error",
       "execSQL": true,
@@ -160,7 +155,8 @@
     // cannot be lowercased — they must match the BDEF/CDS definition exactly.
     "keyword_case": {
       "style": "upper",
-      "ignoreExceptions": true,
+      "severity": "Info",
+      "ignoreExceptions": false,
       "ignoreLowerClassImplmentationStatement": true,
       "ignoreGlobalClassDefinition": false,
       "ignoreGlobalClassBoundaries": false,
